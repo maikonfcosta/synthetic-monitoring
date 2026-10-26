@@ -1,6 +1,6 @@
 # 📡 Synthetic Monitoring — Production Reliability & Probing
 
-> **Robôs de monitoramento sintético contínuo (Playwright + GitHub Actions)** executando probes em produção a cada 30 minutos em múltiplos apps web reais, detectando indisponibilidade, regressão de latência, erros não capturados no console do navegador e falhas de assets antes dos usuários finais.
+> **Robôs de monitoramento sintético contínuo (Playwright + GitHub Actions)** executando probes em produção 2 vezes ao dia (08:00 e 20:00 BRT) em múltiplos apps web reais, detectando indisponibilidade, regressão de latência, erros não capturados no console do navegador e falhas de assets antes dos usuários finais.
 
 <p align="center">
   <img src="docs/demo.gif" alt="Synthetic Monitoring Demo" width="850" />
@@ -42,7 +42,7 @@ Diferente de testes E2E executados apenas no momento do deploy em pipelines CI/C
            ▼                                           ▼
 ┌─────────────────────────┐               ┌─────────────────────────┐
 │     @critical Ring      │               │       @full Ring        │
-│  (A cada 30 minutos)    │               │  (Diário às 03:00 UTC)  │
+│  (2x/dia: 08h e 20h BRT)│               │  (Diário às 03:00 UTC)  │
 ├─────────────────────────┤               ├─────────────────────────┤
 │ • Status HTTP 200       │               │ • Assets 404 (JS/CSS)   │
 │ • SLA Latência (<3s)    │               │ • Broken links crawl    │
@@ -58,7 +58,7 @@ Diferente de testes E2E executados apenas no momento do deploy em pipelines CI/C
                     └─────────────────────────┘
 ```
 
-### 1. Anel Crítico (`@critical`) — Executado a cada 30 min
+### 1. Anel Crítico (`@critical`) — Executado 2 vezes ao dia (08:00 e 20:00 BRT)
 - **Meta de tempo:** Execução completa em `< 10s` (paralelizado com 4 workers).
 - **Critérios de Aceite:**
   1. `HTTP 200 OK` confirmado pela resposta inicial.
@@ -110,7 +110,7 @@ npm run typecheck
 ## 📊 Automação CI / CD (GitHub Actions)
 
 O projeto inclui duas esteiras pré-configuradas em `.github/workflows/`:
-1. `monitoring.yml`: Roda `*/30 * * * *` com Playwright Chromium, gera resumo detalhado no `$GITHUB_STEP_SUMMARY` e avalia incidentes automáticos.
+1. `monitoring.yml`: Roda `0 11,23 * * *` (08:00 e 20:00 BRT) com Playwright Chromium, gera resumo detalhado no `$GITHUB_STEP_SUMMARY` e avalia incidentes automáticos.
 2. `nightly-full.yml`: Roda diariamente às `03:00 UTC` auditando integridade de assets estáticos e headers de CDN.
 
 ---

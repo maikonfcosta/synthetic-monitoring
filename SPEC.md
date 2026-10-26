@@ -14,7 +14,7 @@ Why these targets: Live production environments owned by Maikon, zero third-part
 
 ## What gets tested
 
-### Critical ring (@critical) — every 30 minutes, must stay under 45s total
+### Critical ring (@critical) — 2 times daily (08:00 and 20:00 BRT), must stay under 45s total
 | Case | Layer | Why it matters |
 |---|---|---|
 | HTTP 200 availability & TTFB | Network / HTTP | Catch DNS, CDN, or server down immediately |
@@ -37,7 +37,7 @@ Why these targets: Live production environments owned by Maikon, zero third-part
 5. **Actionable evidence:** Test failures capture URL, response code, console error dumps, and latency metrics in the run summary.
 
 ## CI
-- GitHub Actions workflow scheduled via cron (`*/30 * * * *`) and on-demand `workflow_dispatch`.
+- GitHub Actions workflow scheduled via cron (`0 11,23 * * *` — 08:00 and 20:00 BRT) and on-demand `workflow_dispatch`.
 - Markdown report published to GitHub Actions Job Summary.
 - Automated GitHub issue creation/closure using `GITHUB_TOKEN` (no external secrets needed).
 - Dynamic SVG badge or status dashboard deployment to GitHub Pages.
