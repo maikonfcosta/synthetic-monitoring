@@ -2,6 +2,10 @@
 
 > **Robôs de monitoramento sintético contínuo (Playwright + GitHub Actions)** executando probes em produção a cada 30 minutos em múltiplos apps web reais, detectando indisponibilidade, regressão de latência, erros não capturados no console do navegador e falhas de assets antes dos usuários finais.
 
+<p align="center">
+  <img src="docs/demo.gif" alt="Synthetic Monitoring Demo" width="850" />
+</p>
+
 ---
 
 ## 🎯 Por que Synthetic Monitoring?

@@ -9,6 +9,7 @@
     "test:full": "playwright test --grep @full",
     "summary": "node scripts/generate-summary.mjs",
     "incidents": "node scripts/manage-incidents.mjs",
+    "demo:gif": "node --experimental-strip-types scripts/make-demo-gif.mjs",
     "report": "playwright show-report",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
