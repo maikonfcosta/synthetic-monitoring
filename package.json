@@ -6,7 +6,7 @@
   "scripts": {
     "test": "playwright test",
     "test:critical": "playwright test --grep @critical",
-    "test:full": "playwright test",
+    "test:full": "playwright test --grep @full",
     "report": "playwright show-report",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
