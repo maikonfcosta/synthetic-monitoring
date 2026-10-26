@@ -12,13 +12,11 @@ export default defineConfig({
   expect: {
     timeout: 5_000,
   },
-  reporter: isCI
-    ? [
-        ['github'],
-        ['html', { open: 'never' }],
-        ['json', { outputFile: 'test-results/results.json' }],
-      ]
-    : [['list'], ['html', { open: 'never' }]],
+  reporter: [
+    isCI ? ['github'] : ['list'],
+    ['html', { open: 'never' }],
+    ['json', { outputFile: 'test-results/results.json' }],
+  ],
   use: {
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',

@@ -7,6 +7,8 @@
     "test": "playwright test",
     "test:critical": "playwright test --grep @critical",
     "test:full": "playwright test --grep @full",
+    "summary": "node scripts/generate-summary.mjs",
+    "incidents": "node scripts/manage-incidents.mjs",
     "report": "playwright show-report",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"

@@ -1,0 +1,64 @@
+name: Synthetic Monitoring (Critical Ring)
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  monitor:
+    name: Probe Production Targets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Critical Synthetic Probes
+        id: probe
+        run: npm run test:critical
+        continue-on-error: true
+
+      - name: Generate Monitoring Summary
+        id: summary
+        run: npm run summary
+        continue-on-error: true
+
+      - name: Evaluate Incidents & Auto-Resolve
+        if: always()
+        run: npm run incidents
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Test Report & Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-critical-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+      - name: Fail Job If Probe Failed
+        if: steps.probe.outcome != 'success'
+        run: |
+          echo "Synthetic monitoring probes detected one or more failures in production targets."
+          exit 1

@@ -26,7 +26,11 @@ export const test = base.extend<MonitorFixtures>({
         timeout: 10_000,
       });
       const endTime = performance.now();
-      const latencyMs = Math.round(endTime - startTime);
+      const timing = response?.request().timing();
+      // True network latency (TTFB + response transfer) excluding browser launch overhead
+      const latencyMs = timing && timing.responseEnd > 0
+        ? Math.round(timing.responseEnd)
+        : Math.round(endTime - startTime);
 
       const status = response?.status() ?? 0;
       const ok = response?.ok() ?? false;
